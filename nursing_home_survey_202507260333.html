@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skilled Nursing Facility Survey</title>
+    
+    <!-- Link to the Web App Manifest -->
+    <link rel="manifest" href="manifest.json">
+    
+    <!-- Theme color for the browser address bar -->
+    <meta name="theme-color" content="#4338ca">
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;7.00&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .star-rating input[type="radio"] {
+            display: none;
+        }
+        .star-rating label {
+            font-size: 2.5rem;
+            color: #d1d5db;
+            cursor: pointer;
+            transition: color 0.2s;
+        }
+        .star-rating input[type="radio"]:checked ~ label {
+            color: #f59e0b;
+        }
+        .star-rating label:hover,
+        .star-rating label:hover ~ label {
+            color: #f59e0b;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto max-w-2xl px-4 py-8">
+        <header class="text-center mb-8">
+            <h1 class="text-3xl font-bold text-gray-800">Skilled Nursing Facility Survey</h1>
+            <p class="text-gray-600 mt-2">We value your feedback on your recent stay.</p>
+        </header>
+
+        <main id="survey-form" class="bg-white p-8 rounded-lg shadow-lg">
+            
+            <div class="mb-6">
+                <label for="resident-name" class="block text-lg font-medium text-gray-700 mb-2">Resident's Name</label>
+                <input type="text" id="resident-name" name="resident-name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500">
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">1. Overall quality of care</h3>
+                <div class="star-rating flex flex-row-reverse justify-end">
+                    <input type="radio" id="care-5" name="quality_of_care" value="5"><label for="care-5">★</label>
+                    <input type="radio" id="care-4" name="quality_of_care" value="4"><label for="care-4">★</label>
+                    <input type="radio" id="care-3" name="quality_of_care" value="3"><label for="care-3">★</label>
+                    <input type="radio" id="care-2" name="quality_of_care" value="2"><label for="care-2">★</label>
+                    <input type="radio" id="care-1" name="quality_of_care" value="1"><label for="care-1">★</label>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">2. Staff responsiveness</h3>
+                <div class="star-rating flex flex-row-reverse justify-end">
+                    <input type="radio" id="responsiveness-5" name="staff_responsiveness" value="5"><label for="responsiveness-5">★</label>
+                    <input type="radio" id="responsiveness-4" name="staff_responsiveness" value="4"><label for="responsiveness-4">★</label>
+                    <input type="radio" id="responsiveness-3" name="staff_responsiveness" value="3"><label for="responsiveness-3">★</label>
+                    <input type="radio" id="responsiveness-2" name="staff_responsiveness" value="2"><label for="responsiveness-2">★</label>
+                    <input type="radio" id="responsiveness-1" name="staff_responsiveness" value="1"><label for="responsiveness-1">★</label>
+                </div>
+            </div>
+            
+            <div class="mb-6">
+                <h3 class="text-lg font-medium text-gray-700 mb-2">3. Cleanliness of the facility</h3>
+                <div class="star-rating flex flex-row-reverse justify-end">
+                    <input type="radio" id="cleanliness-5" name="cleanliness" value="5"><label for="cleanliness-5">★</label>
+                    <input type="radio" id="cleanliness-4" name="cleanliness" value="4"><label for="cleanliness-4">★</label>
+                    <input type="radio" id="cleanliness-3" name="cleanliness" value="3"><label for="cleanliness-3">★</label>
+                    <input type="radio" id="cleanliness-2" name="cleanliness" value="2"><label for="cleanliness-2">★</label>
+                    <input type="radio" id="cleanliness-1" name="cleanliness" value="1"><label for="cleanliness-1">★</label>
+                </div>
+            </div>
+
+            <div class="mb-6">
+                <label for="comments" class="block text-lg font-medium text-gray-700 mb-2">Additional Comments</label>
+                <textarea id="comments" name="comments" rows="4" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500"></textarea>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-lg font-medium text-gray-700 mb-2">Take a Picture</label>
+                <div id="camera-error" class="hidden text-red-500 my-2 font-medium"></div>
+                <div class="mt-2 flex items-center">
+                    <button id="start-camera" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg mr-4">Start Camera</button>
+                    <video id="video" width="320" height="240" autoplay class="hidden border rounded-lg"></video>
+                </div>
+                <div class="mt-4">
+                     <button id="click-photo" class="hidden bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded-lg">Click Photo</button>
+                </div>
+                <canvas id="canvas" width="320" height="240" class="hidden"></canvas>
+                <div id="photo-container" class="mt-4 flex flex-wrap"></div>
+            </div>
+
+            <div class="text-center mt-8">
+                <button id="download-excel" class="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-6 rounded-lg shadow-md transition-transform transform hover:scale-105">Download Answers to Excel</button>
+            </div>
+        </main>
+
+        <footer class="text-center mt-8 text-gray-500">
+            <p>&copy; 2025 Skilled Nursing Facility. All rights reserved.</p>
+        </footer>
+    </div>
+
+    <script>
+        // All your existing survey logic goes here...
+        const startCameraButton = document.getElementById('start-camera');
+        const clickPhotoButton = document.getElementById('click-photo');
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const photoContainer = document.getElementById('photo-container');
+        const cameraError = document.getElementById('camera-error');
+        let stream;
+        let photos = [];
+
+        startCameraButton.addEventListener('click', async () => {
+            cameraError.classList.add('hidden');
+            if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+                cameraError.textContent = "Camera API is not supported by your browser.";
+                cameraError.classList.remove('hidden');
+                return;
+            }
+            try {
+                stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                video.srcObject = stream;
+                video.classList.remove('hidden');
+                clickPhotoButton.classList.remove('hidden');
+                startCameraButton.classList.add('hidden');
+            } catch (err) {
+                console.error("Error accessing camera: ", err);
+                let errorMessage = "Could not access the camera. Please ensure you have given permission and that a camera is connected.";
+                if (err.name === "NotFoundError" || err.name === "DevicesNotFoundError") {
+                    errorMessage = "No camera was found. Please make sure a camera is connected and try again.";
+                } else if (err.name === "NotAllowedError" || err.name === "PermissionDeniedError") {
+                    errorMessage = "Permission to use the camera was denied. Please check your browser settings to allow camera access.";
+                }
+                cameraError.textContent = errorMessage;
+                cameraError.classList.remove('hidden');
+            }
+        });
+
+        clickPhotoButton.addEventListener('click', () => {
+            const context = canvas.getContext('2d');
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const dataUrl = canvas.toDataURL('image/png');
+            photos.push(dataUrl);
+            
+            const img = document.createElement('img');
+            img.src = dataUrl;
+            img.classList.add('w-32', 'h-24', 'object-cover', 'rounded-lg', 'inline-block', 'mr-2', 'mb-2', 'border');
+            photoContainer.appendChild(img);
+        });
+
+        document.getElementById('download-excel').addEventListener('click', () => {
+            let csvContent = "data:text/csv;charset=utf-8,";
+            const headers = ["Question", "Answer"];
+            csvContent += headers.join(",") + "\r\n";
+            const residentName = document.getElementById('resident-name').value;
+            csvContent += `Resident's Name,${residentName}\r\n`;
+            const careRating = document.querySelector('input[name="quality_of_care"]:checked');
+            csvContent += `Overall quality of care,${careRating ? careRating.value : 'N/A'}\r\n`;
+            const responsivenessRating = document.querySelector('input[name="staff_responsiveness"]:checked');
+            csvContent += `Staff responsiveness,${responsivenessRating ? responsivenessRating.value : 'N/A'}\r\n`;
+            const cleanlinessRating = document.querySelector('input[name="cleanliness"]:checked');
+            csvContent += `Cleanliness of the facility,${cleanlinessRating ? cleanlinessRating.value : 'N/A'}\r\n`;
+            const comments = document.getElementById('comments').value.replace(/,/g, ";").replace(/\n/g, " ");
+            csvContent += `Additional Comments,"${comments}"\r\n`;
+            if (photos.length > 0) {
+                csvContent += "Photos (Base64 Encoded)\r\n";
+                photos.forEach((photo, index) => {
+                    csvContent += `Photo ${index + 1},"${photo}"\r\n`;
+                });
+            }
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "survey_answers.csv");
+            document.body.appendChild(link); 
+            link.click();
+            document.body.removeChild(link);
+        });
+    </script>
+    
+    <!-- Service Worker Registration Script -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker.register('service-worker.js')
+                .then(registration => {
+                    console.log('ServiceWorker registration successful with scope: ', registration.scope);
+                })
+                .catch(error => {
+                    console.log('ServiceWorker registration failed: ', error);
+                });
+            });
+        }
+    </script>
+</body>
+</html>
